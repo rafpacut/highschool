@@ -46,7 +46,11 @@ if(isset($_GET['channel']))
 	{
 		if($file == $_GET['channel'])
 		{
-			echo "twoj ruch";
+			echo "twoj ruch <br>";
+			$newplayer = substr($file,-1) % 2 + 1;
+			$newfile = substr($file ,0,-1) . $newplayer;
+			sleep(3);
+			rename($file, $newfile);
 		}
 	}
 }
