@@ -3,14 +3,21 @@
 <?php
 if(isset($_GET['x']))
 {
-//	$newboard= file_get_contents($_GET['channel']; // nie ma juz channel- na koncu skryptu jest rename tuz po wyswietleniu tablicy
-//	for($i = 0; $i < 17; $i++)
-//	{
-//		if($i == ( 4*($x-1) + $y))
-//		{
-//			$newboard[$i] = $_GET['player'];
-//		}
-//	}
+	$channel = $_GET['channel'];
+	$x = $_GET['x'];
+	$y = $_GET['y'];
+	$newboard= file_get_contents($channel);
+	for($i = 0; $i < 17; $i++)
+	{
+		if($i == ( 4*($y-1) + $x))
+		{
+			$newboard[$i] = $_GET['player'];
+		}
+	}
+	file_put_contents($channel,$newboard);
+	$newplayer = substr($channel,-1) % 2 + 1; // zmien nazwe pliku
+	$newfile = substr($channel ,0,-1) . $newplayer;
+	rename($channel, $newfile);
 }
 
 
@@ -47,11 +54,11 @@ if(!isset($_GET['player']))
 		rename($files[0], $newfile);
 		$channel = $channel . '.' . $player;
 	}
-	echo '<Meta http-equiv="refresh" content="10;URL=http://localhost/kolko_krzyzyk/index.php?channel=' . $channel .  '&player=' . $player . '">';
+	echo '<Meta http-equiv="refresh" content="0;URL=http://localhost/kolko_krzyzyk/index.php?channel=' . $channel .  '&player=' . $player . '">';
 }
 else
 {
-	echo '<Meta http-equiv="refresh" content="10;URL=http://localhost/kolko_krzyzyk/index.php?channel=' . $_GET['channel'] .  '&player=' .  $_GET['player'] . '">';
+	echo '<Meta http-equiv="refresh" content="5;URL=http://localhost/kolko_krzyzyk/index.php?channel=' . $_GET['channel'] .  '&player=' .  $_GET['player'] . '">';
 }
 
 ?>
@@ -85,7 +92,7 @@ if(isset($_GET['channel']))
 					else
 					{
 						echo '<a href="http://localhost/kolko_krzyzyk/index.php?channel='.$_GET['channel'].'&player='.$_GET['player'].'">
-							<img src="images/image'.$_GET['player'].'.jpg"></a>';
+							<img src="images/image'.$board[4*($i-1)+ $j].'.jpg"></a>';
 					}
 
 					echo '</td>';
@@ -95,10 +102,6 @@ if(isset($_GET['channel']))
 			echo '</table>';
 
 
-			$newplayer = substr($file,-1) % 2 + 1; // zmien nazwe pliku
-			$newfile = substr($file ,0,-1) . $newplayer;
-			sleep(3);
-			rename($file, $newfile);
 		}
 	}
 }
