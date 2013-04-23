@@ -1,6 +1,56 @@
 <html>
 <head>
 <?php
+
+function get_pos( $x, $y )
+{
+	$pos = 4*$y + $x;
+	if( $pos > 0 && $pos < 4 )
+		return $pos;
+	else
+		return -1;
+}
+
+
+function sum_line( $x, $y, $file, $dx, $dy )
+{
+	$sum = 0;
+	$x -= 4*$dx;
+	$y -= 4*$dy;
+	echo "dx: $dx, dy: $dy <br> <br>";
+	for( $i = 0; $i < 8; $i++)
+	{
+		echo "x: $x, y: $y, sum: $sum" . '<br>';
+		if( $sum == 3 )
+			return true;
+		$pos = get_pos( $x, $y);
+		if(  $pos != -1)
+		{
+			echo "pos: $pos <br>";
+			if( $_GET['player'] == $file[$pos] )
+				$sum++;
+		}
+		$x += $dx;
+		$y += $dy;
+	}
+	return false;
+}
+
+
+
+
+function check_for_win($start_x, $start_y, $file)
+{
+	if( sum_line( $start_x, $start_y, $file, -1, -1) ||
+		sum_line( $start_x, $start_y, $file, -1, 0) ||
+		sum_line( $start_x, $start_y, $file, 1, -1) ||
+		sum_line( $start_x, $start_y, $file, 0, 1) )
+			return true;
+		else
+			return false;
+}
+
+
 if(isset($_GET['x']))
 {
 	$channel = $_GET['channel'];
@@ -14,6 +64,12 @@ if(isset($_GET['x']))
 			$newboard[$i] = $_GET['player'];
 		}
 	}
+
+	if(check_for_win($x, $y, $newboard))
+	{
+		echo "wygrales!";
+	}
+
 	file_put_contents($channel,$newboard);
 	$newplayer = substr($channel,-1) % 2 + 1; // zmien nazwe pliku
 	$newfile = substr($channel ,0,-1) . $newplayer;
@@ -58,7 +114,7 @@ if(!isset($_GET['player']))
 }
 else
 {
-	echo '<Meta http-equiv="refresh" content="5;URL=http://localhost/kolko_krzyzyk/index.php?channel=' . $_GET['channel'] .  '&player=' .  $_GET['player'] . '">';
+	echo '<Meta http-equiv="refresh" content="20;URL=http://localhost/kolko_krzyzyk/index.php?channel=' . $_GET['channel'] .  '&player=' .  $_GET['player'] . '">';
 }
 
 ?>
