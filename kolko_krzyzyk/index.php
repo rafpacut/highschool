@@ -1,11 +1,12 @@
 <html>
+
 <head>
 <?php
 
 function get_pos( $x, $y )
 {
-	$pos = 4*$y + $x;
-	if( $pos > 0 && $pos < 4 )
+	$pos = 4*($y-1) + $x;
+	if( $pos >= 0 && $pos <= 16 )// or equal
 		return $pos;
 	else
 		return -1;
@@ -17,10 +18,8 @@ function sum_line( $x, $y, $file, $dx, $dy )
 	$sum = 0;
 	$x -= 4*$dx;
 	$y -= 4*$dy;
-	echo "dx: $dx, dy: $dy <br> <br>";
 	for( $i = 0; $i < 8; $i++)
 	{
-		echo "x: $x, y: $y, sum: $sum" . '<br>';
 		if( $sum == 3 )
 			return true;
 		$pos = get_pos( $x, $y);
@@ -29,6 +28,8 @@ function sum_line( $x, $y, $file, $dx, $dy )
 			echo "pos: $pos <br>";
 			if( $_GET['player'] == $file[$pos] )
 				$sum++;
+			else
+				$sum = 0;
 		}
 		$x += $dx;
 		$y += $dy;
@@ -43,7 +44,7 @@ function check_for_win($start_x, $start_y, $file)
 {
 	if( sum_line( $start_x, $start_y, $file, -1, -1) ||
 		sum_line( $start_x, $start_y, $file, -1, 0) ||
-		sum_line( $start_x, $start_y, $file, 1, -1) ||
+		sum_line( $start_x, $start_y, $file, -1, 1) ||
 		sum_line( $start_x, $start_y, $file, 0, 1) )
 			return true;
 		else
@@ -114,7 +115,7 @@ if(!isset($_GET['player']))
 }
 else
 {
-	echo '<Meta http-equiv="refresh" content="20;URL=http://localhost/kolko_krzyzyk/index.php?channel=' . $_GET['channel'] .  '&player=' .  $_GET['player'] . '">';
+	echo '<Meta http-equiv="refresh" content="5;URL=http://localhost/kolko_krzyzyk/index.php?channel=' . $_GET['channel'] .  '&player=' .  $_GET['player'] . '">';
 }
 
 ?>
