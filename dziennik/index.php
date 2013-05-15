@@ -1,3 +1,16 @@
+<!-- 
+program imitujacy dziennik elektroniczny z mozliwoscia przegladania ocen uczniow i dodawania ich.
+
+struktura bazy danych:
+	-osoby:
+		id, imie, nazwisko;
+	-przedmioty:
+		id, nazwa;
+	-oceny:
+		id, wartosc(INT), nazwa(string);
+	-main:
+		 id_przedmiot,id_osoba, id_ocena;
+-->
 <html>
 <head>
 </head>
