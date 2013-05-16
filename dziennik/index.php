@@ -15,30 +15,17 @@ struktura bazy danych:
 <head>
 </head>
 <body>
- <!-- wybierz osobe, ktorej oceny bedziemy przegladac -->
-<form action="">
-<select name="osoby">
-
-
-
 <?php
-//pobierz z bazy danych liste osob ( posortuj po nazwiskach, czy baza sama to zrobi?)
-$link = mysql_connect('localhost', 'root', 'rootpassword');
-if( !$link ) 
-	die('nie mozna sie polaczyc z localhost' . mysql_error() );
+//wybierz osobe, ktorej oceny bedziemy przegladac
 
-mysql_select_db('dziennik',$link);
-$query = 'select * from osoby';
-$db_struct = mysql_query($query);
+include 'wybor_uczniowie.php';
 
-while( $row = mysql_fetch_array($db_struct) )
+// wyswietl menu z wyborem przedmiotow. ToDo: dodaj opcje "zestawienie ocen z przedmiotow, badz samej sredniej z nich"
+if(isset($_GET['form_student'] ) ) // jezeli zostala wybrana osoba
 {
-	echo '<option value=' . $row['id'] . '>' . $row['imie'] . ' ' . $row['nazwisko'] . '</option>';
+	include 'wybor_przedmioty.php';
 }
 ?>
-
-</select>
-</form>
 </body>
 
 </html>
