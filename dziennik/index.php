@@ -15,16 +15,28 @@ struktura bazy danych:
 <head>
 </head>
 <body>
+
+<form action="index.php?action=" method="GET">
+	<button name="action" type="submit" value="browse">Przegladnij oceny</button>
+	<button name="action" type="submit" value="add">Wstaw ocene</button>
+</form>
+
 <?php
 //wybierz osobe, ktorej oceny bedziemy przegladac
-
-include 'wybor_uczniowie.php';
-
-// wyswietl menu z wyborem przedmiotow. ToDo: dodaj opcje "zestawienie ocen z przedmiotow, badz samej sredniej z nich"
-if(isset($_GET['form_student'] ) ) // jezeli zostala wybrana osoba
+if( isset($_GET['action'] ) )
 {
-	include 'wybor_przedmioty.php';
+	$action = $_GET['action'];
+	if( $action == 'browse' )
+	{
+		include 'browse/students.php';
+	}
+	else
+	{
+		echo "add";
+	}
 }
+
+
 ?>
 </body>
 
