@@ -1,3 +1,7 @@
+<form action="../index.php">
+	<button type="submit">Wroc</button>
+</form>
+
 <table align=center>
 
 <?php
@@ -11,7 +15,7 @@ $db_struct = mysql_query( $query );
 while( $row = mysql_fetch_array( $db_struct ) )
 {
 	echo '<tr><br><td>';
-	echo '<a href=browse/subjects.php?student=' . $row['id'] . '>' . $row['imie'] . ' ' . $row['nazwisko'] . '</a>';
+	echo '<a href=grades.php?action=browse&student=' . $row['id'] . '>' . $row['imie'] . ' ' . $row['nazwisko'] . '</a>';
 	echo '</td></tr>';
 }
 ?>

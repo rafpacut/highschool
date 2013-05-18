@@ -15,14 +15,14 @@ struktura bazy danych:
 <head>
 </head>
 <body>
-
-<form action="index.php?action=" method="GET">
-	<button name="action" type="submit" value="browse">Przegladnij oceny</button>
-	<button name="action" type="submit" value="add">Wstaw ocene</button>
+<!--  -->
+<!-- Przegladaj oceny -->
+<form action="browse/students.php" method="GET">
+	<button type="submit">Przegladaj oceny</button>
 </form>
 
 <?php
-//wybierz osobe, ktorej oceny bedziemy przegladac
+// dolaczanie modulow odpowiadajacych wybranej akcji
 if( isset($_GET['action'] ) )
 {
 	$action = $_GET['action'];
