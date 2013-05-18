@@ -16,12 +16,12 @@ struktura bazy danych:
 </head>
 <body>
 <!-- Przegladaj oceny -->
-<form action="browse/students.php" method="GET">
+<form action="browse/students.php">
 	<button type="submit">Przegladaj oceny</button>
 </form>
 
 <!--Wstaw ocene  -->
-<form action="add/subjects.php" method="GET">
+<form action="add/subjects.php"> 
 	<button type="submit">Wstaw ocene</button>
 </form>
 
