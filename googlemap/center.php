@@ -6,7 +6,12 @@ mysql_select_db( 'googlemap' );
 
 if( isset( $_POST['marker_pos'] ) )
 {
-	$query = 'insert into marker_pos (latitude, longitude) values(' . $_POST['marker_pos'][0] . ', ' . $_POST['marker_pos'][1] . ')';
+	$query = 'insert into marker_pos (id, latitude, longitude) values(' . $_POST['marker_pos'][0] . ',' . $_POST['marker_pos'][1] . ', ' . $_POST['marker_pos'][2] . ')';
+	mysql_query( $query ) or die( mysql_error() );
+}
+else if( isset( $_POST['id'] ) )
+{
+	$query = 'delete from marker_pos where id =' .$_POST['id'];
 	mysql_query( $query ) or die( mysql_error() );
 }
 else

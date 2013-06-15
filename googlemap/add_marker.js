@@ -1,21 +1,36 @@
 var map;
+var markersArray = [];
+// if there is no markers in database, the first marker will have no id, 
+// and by clicking on the map the markersArray[0] would be NaN
+markersArray[0] = -1; 
 
-function add_marker(  markLatlng )
+
+function add_marker( location, marker_id )
 {
 	var marker = new google.maps.Marker
 	({
-		position: markLatlng,
+		position: location,
 		map: map,
-		title: "Marker"
-	})
-
+		title: "marker",
+		id: marker_id
+	});
+	console.log( "marker_id: " + marker_id );
+	//marker specific event listener allowing deletion:
+	google.maps.event.addListener( marker, 'click', function()
+	{
+		$.post("/googlemap/center.php", { 'id': marker_id });
+		marker.setMap( null );
+	});
 
 	//send marker position to database via php:
-	$.post("/googlemap/center.php", { 'marker_pos[]': [ markLatlng.lat(), markLatlng.lng() ]});
+	//w tej chwili unikalnosc markerow jest zachowana dzieki odrzucaniu duplikatow przez baze danych,
+	//nie lepiej byloby sprawdzic ja iterujac po tablicy markerow?
+	$.post("/googlemap/center.php", { 'marker_pos[]': [ marker_id, location.lat(), location.lng() ]});
 
-
-	return marker;
+	markersArray.push( marker_id );
 }
+
+
 
 function initialize()
 {
@@ -33,27 +48,20 @@ function initialize()
   	{
 		$.each( data, function( key, val )
 		{
-			//var new_marker_Latlng = new google.maps.LatLng( val.latitude, val.longitude );
-			//add_marker( new_marker_Latlng );
-			//val zawiera zarowno latitude i longitude, nalezy to rozdzielic
-			console.log( "latitude "+val );
+			var new_marker_Latlng = new google.maps.LatLng( val[0], val[1] );
+			add_marker( new_marker_Latlng, key );
 		});
 
 		
 	});
 
 //create a marker after clicking on map:
-google.maps.event.addListener(map, 'click', function( event )
+google.maps.event.addListener( map, 'click', function( event )
 {
-	  var markLatlng = new google.maps.LatLng( event.latLng.lat(), event.latLng.lng() );
-	  add_marker( markLatlng );
+	marker_id = markersArray[markersArray.length - 1] + 1;
+	  add_marker( event.latLng, marker_id );
 });
 
-//google.maps.event.addListener(marker, 'click', function( event )
-//{
-//
-//
-//});
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
