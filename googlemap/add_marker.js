@@ -14,7 +14,7 @@ function add_marker( location, marker_id )
 		title: "marker",
 		id: marker_id
 	});
-	console.log( "marker_id: " + marker_id );
+
 	//marker specific event listener allowing deletion:
 	google.maps.event.addListener( marker, 'click', function()
 	{
@@ -49,7 +49,7 @@ function initialize()
 		$.each( data, function( key, val )
 		{
 			var new_marker_Latlng = new google.maps.LatLng( val[0], val[1] );
-			add_marker( new_marker_Latlng, key );
+			add_marker( new_marker_Latlng, parseFloat(key) );
 		});
 
 		
