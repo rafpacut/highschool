@@ -62,6 +62,10 @@ google.maps.event.addListener( map, 'click', function( event )
 	  add_marker( event.latLng, marker_id );
 });
 
+
+var distanceWidget = new DistanceWidget( map );
+
+
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
