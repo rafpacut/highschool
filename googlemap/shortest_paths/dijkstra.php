@@ -1,5 +1,6 @@
 <?php
 include "graph_init.php";
+set_time_limit(30);
 
 
 //echo $graph[0]->number;
@@ -7,14 +8,16 @@ include "graph_init.php";
 function find_minimal( $Q )
 {
 	$minimal = $Q[0];
-	foreach( $Q as $vert )
+	$min_key = 0;
+	foreach( $Q as $key => $vert )
 	{
 		if( $minimal->distance > $vert->distance )
 		{
 			$minimal = $vert;
+			$min_key = $key;
 		}
 	}
-	return $minimal;
+	return $min_key;
 }
 
 
@@ -30,30 +33,32 @@ function dijkstra( $graph, $source, $target )
 	$Q =  $graph;
 	while( count( $Q ) > 0 )
 	{
-		$actual_vert = find_minimal( $Q  );
-		foreach( $actual_vert->nbg_edges as $edge )
+		$min_index = find_minimal( $Q  );
+		$actual_vert = $Q[ $min_index ];
+		unset( $Q[ $min_index ] );
+		foreach( $actual_vert->ngb_edges as $edge )
 		{
-			if( $edge->ngb->distance > $actual_vert->distance + $edge->weigth )
+			$ngb_index = array_search( $edge->ngb, $Q );
+			unset( $Q[$ngb_index] );
+			if( $edge->ngb->distance > $actual_vert->distance + $edge->weight )
 			{
-				$edge->ngb->distance = $actual_vert->distance + $edge->weigth;
+				$edge->ngb->distance = $actual_vert->distance + $edge->weight;
 				$edge->ngb->parent = $actual_vert;
 				array_unshift( $Q, $edge->ngb );
 			}
 		}
 	}
-	$trace = $target;
-	echo $trace->number;
-	while( $trace->parent != null )
-	{
-		$trace = $trace->parent;
-		echo $trace-number;
-	}
-
-
 }
 
 dijkstra( $graph, $graph[0], $graph[2] ); 
 
+$trace = $graph[2];
+echo $trace->number . '<br>';
+while( !is_null( $trace->parent ) )
+{
+	$trace = $trace->parent;
+	echo $trace->number . '<br>';
+}
 
 
 ?>
