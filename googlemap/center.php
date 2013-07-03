@@ -4,14 +4,14 @@
 mysql_connect( 'localhost', 'root', 'rootpassword');
 mysql_select_db( 'googlemap' );
 
-if( isset( $_POST['marker_pos'] ) )
+if( isset( $_GET['marker_id'] ) )
 {
-	$query = 'insert into marker_pos (id, latitude, longitude) values(' . $_POST['marker_pos'][0] . ',' . $_POST['marker_pos'][1] . ', ' . $_POST['marker_pos'][2] . ')';
+	$query = 'insert into marker_pos (id, latitude, longitude) values(' . $_GET['marker_id'] . ',' . $_GET['lat'] . ', ' . $_GET['lng'] . ')';
 	mysql_query( $query ) or die( mysql_error() );
 }
-else if( isset( $_POST['id'] ) )
+else if( isset( $_GET['id'] ) )
 {
-	$query = 'delete from marker_pos where id =' .$_POST['id'];
+	$query = 'delete from marker_pos where id =' .$_GET['id'];
 	mysql_query( $query ) or die( mysql_error() );
 }
 else
