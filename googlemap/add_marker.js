@@ -4,7 +4,7 @@ var markersArray = [];
 // and by clicking on the map the markersArray[0] would be NaN
 markersArray[0] = -1; 
 var graph_constructing = false;
-var json_str = [];
+var source = [];
 
 
 function add_marker( location, marker_id )
@@ -20,7 +20,7 @@ function add_marker( location, marker_id )
 	//marker specific event listener allowing deletion:
 	google.maps.event.addListener( marker, 'click', function()
 	{
-		$.post("/googlemap/center.php", { 'id': marker_id });
+		$.getJSON("/googlemap/center.php", { 'id': marker_id });
 		marker.setMap( null );
 	});
 
@@ -28,7 +28,7 @@ function add_marker( location, marker_id )
 	//send marker position to database via php:
 	//w tej chwili unikalnosc markerow jest zachowana dzieki odrzucaniu duplikatow przez baze danych,
 	//nie lepiej byloby sprawdzic ja iterujac po tablicy markerow?
-	$.post("/googlemap/center.php", { 'marker_pos[]': [ marker_id, location.lat(), location.lng() ]});
+	$.getJSON("/googlemap/center.php", { 'marker_id': marker_id ,'lat': location.lat() , 'lng': location.lng() });
 
 	google.maps.event.addListener( marker, 'rightclick', function()
 	{
@@ -36,21 +36,16 @@ function add_marker( location, marker_id )
         	{
 			graph_constructing = false;
 
-			json_str[1] = [];
-			json_str[1][0] = marker_id;
-			json_str[1][1] = location.lat();
-			json_str[1][2] = location.lng();
-
-			$.post("/googlemap/shortest_paths/graph_init.php", JSON.stringify( json_str ) );
+			$.getJSON("/googlemap/shortest_paths/graph_init.php",{ 'source_id': source[0], 'source_lat': source[1], 
+			       'source_lng': source[2], 'dest_id': marker_id, 'dest_lng': location.lat(), 'dest_lng': location.lng() }	);
 		}
 		else
 		{
 			graph_constructing = true;
 
-			json_str[0] = [];
-			json_str[0][0] = marker_id;
-			json_str[0][1] = location.lat();
-			json_str[0][2] = location.lng();
+			source[0] = marker_id;
+			source[1] = location.lat();
+			source[2] = location.lng();
 		}
 
 		
