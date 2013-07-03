@@ -1,5 +1,4 @@
 <?php
-include "graph_init.php";
 set_time_limit(30);
 
 
@@ -38,7 +37,7 @@ function dijkstra( $graph, $source, $target )
 		unset( $Q[ $min_index ] );
 		foreach( $actual_vert->ngb_edges as $edge )
 		{
-			$ngb_index = array_search( $edge->ngb, $Q );
+			$ngb_index = array_search( $edge->ngb, $Q, true );
 			unset( $Q[$ngb_index] );
 			if( $edge->ngb->distance > $actual_vert->distance + $edge->weight )
 			{
@@ -48,16 +47,6 @@ function dijkstra( $graph, $source, $target )
 			}
 		}
 	}
-}
-
-dijkstra( $graph, $graph[0], $graph[2] ); 
-
-$trace = $graph[2];
-echo $trace->number . '<br>';
-while( !is_null( $trace->parent ) )
-{
-	$trace = $trace->parent;
-	echo $trace->number . '<br>';
 }
 
 
