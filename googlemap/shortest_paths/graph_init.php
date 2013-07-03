@@ -42,6 +42,7 @@ $graph = array();
 //
 //$graph[1]->ngb_edges[0]->ngb = $graph[2];
 //$graph[1]->ngb_edges[0]->weight = 6;
+//dijkstra( $graph, $graph[0], $graph[2] );
 
 /*
 Calculates the great-circle distance between two points, with
@@ -105,14 +106,14 @@ if( isset( $_GET['source_id'] ) )
 		}
 	}
 
-	//foreach( $graph as $vert )
-	//{
-	//	echo "marker nr: " . $vert->number . " has ngb's: ";
-	//	foreach( $vert->ngb_edges as $edge )
-	//	{
-	//		echo $edge->ngb->number . ',';
-	//	}
-	//}
+	foreach( $graph as $vert )
+	{
+		echo "marker nr: " . $vert->number . " has ngb's: ";
+		foreach( $vert->ngb_edges as $edge )
+		{
+			echo $edge->ngb->number . ',';
+		}
+	}
 
 
 
@@ -127,14 +128,28 @@ if( isset( $_GET['source_id'] ) )
 
 	dijkstra( $graph, $source, $target );
 
+	$path = array();
 	$trace = $target;
-	echo $trace->number . " ";
+	//echo $trace->number . " ";
+
+	$path[0] = array();
+	$path[0][0] = $trace->lat;
+	$path[0][1] = $trace->lng;
+
+	
 	while( $trace->parent != null )
 	{
 		$trace = $trace->parent;
-		echo $trace->number . " ";
+		$arr = array();
+		array_push( $path, $arr );
+		$el_number = count( $path );
+		$path[ $el_number ][0] = $trace->lat;
+		$path[ $el_number ][1] = $trace->lng;
+		//echo $trace->number . " ";
 	}
 
+	$obj = json_encode( $path );
+	echo $obj;
 }
 
 
