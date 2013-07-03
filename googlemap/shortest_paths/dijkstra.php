@@ -27,15 +27,8 @@ function dijkstra( $graph, $source, $target )
 {
 	$source->distance = 0;
 	$Q =  $graph;
-	echo "wejscie do dijkstry \n";
 	while( count( $Q ) > 0 )
 	{
-		echo "cos \n";
-		foreach( $Q as $vert ) 
-		{
-			echo $vert->number . " ";
-		}
-
 		$min_index = find_minimal( $Q  );
 		$actual_vert = $Q[ $min_index ];
 		unset( $Q[ $min_index ] );

@@ -106,14 +106,14 @@ if( isset( $_GET['source_id'] ) )
 		}
 	}
 
-	foreach( $graph as $vert )
-	{
-		echo "marker nr: " . $vert->number . " has ngb's: ";
-		foreach( $vert->ngb_edges as $edge )
-		{
-			echo $edge->ngb->number . ',';
-		}
-	}
+//	foreach( $graph as $vert )
+//	{
+//		echo "marker nr: " . $vert->number . " has ngb's: ";
+//		foreach( $vert->ngb_edges as $edge )
+//		{
+//			echo $edge->ngb->number . ',';
+//		}
+//	}
 
 
 

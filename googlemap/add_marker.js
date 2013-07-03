@@ -17,6 +17,16 @@ function add_marker( location, marker_id )
 		id: marker_id
 	});
 
+
+	var circle = new google.maps.Circle
+	({
+		center: location,
+		radius: 250000,
+		map: map,
+		clickable: true,
+		strokeWeight: 2
+	});
+
 	//marker specific event listener allowing deletion:
 	google.maps.event.addListener( marker, 'click', function()
 	{
@@ -37,7 +47,11 @@ function add_marker( location, marker_id )
 			graph_constructing = false;
 
 			$.getJSON("/googlemap/shortest_paths/graph_init.php",{ 'source_id': source[0], 'source_lat': source[1], 
-			       'source_lng': source[2], 'dest_id': marker_id, 'dest_lng': location.lat(), 'dest_lng': location.lng() }	);
+			       'source_lng': source[2], 'dest_id': marker_id, 'dest_lng': location.lat(), 'dest_lng': location.lng() }, 
+		       		function( data ) 
+				{
+					draw_polyline( data);
+				});
 		}
 		else
 		{
