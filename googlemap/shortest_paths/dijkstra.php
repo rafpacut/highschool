@@ -20,7 +20,26 @@ function find_minimal( $Q )
 	return $min_key;
 }
 
-
+function pprint( $Q, $graph )
+{
+	echo '$Q: ';
+	foreach( $Q as $q_vert )
+	{
+		if( $q_vert->parent != null )
+			echo $q_vert->number . " has a parent in: " . $q_vert->parent->number . ", ";
+		else
+			echo $q_vert->number . " has no parent, ";
+	}
+	echo 'graph: ';
+	foreach( $graph as $g_vert )
+	{
+		if( $g_vert->parent != null )
+			echo $g_vert->number . " has a parent in: " . $g_vert->parent->number . ", ";
+		else
+			echo $g_vert->number . " has no parent, ";
+	}
+	echo "END OF TURN           ";
+}
 
 
 function dijkstra( $graph, $source, $target )
@@ -35,8 +54,8 @@ function dijkstra( $graph, $source, $target )
 		$Q = array_values( $Q ) ;
 		foreach( $actual_vert->ngb_edges as $edge )
 		{
-			$ngb_index = array_search( $edge->ngb, $Q, true );
-			unset( $Q[$ngb_index] );
+			//$ngb_index = array_search( $edge->ngb, $Q, true );
+			//unset( $Q[$ngb_index] );
 			if( $edge->ngb->distance > $actual_vert->distance + $edge->weight )
 			{
 				$edge->ngb->distance = $actual_vert->distance + $edge->weight;
@@ -45,6 +64,7 @@ function dijkstra( $graph, $source, $target )
 			}
 			$Q = array_values( $Q ) ;
 		}
+		//pprint( $Q, $graph );
 	}
 }
 

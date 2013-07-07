@@ -3,9 +3,13 @@ function draw_polyline( data )
 	var path = [];
 	$.each( data, function( key, val )
 	{
-		var position = new google.maps.LatLng( val[0], val[1] );
-		path.push( position );
+		if( !isNaN( val[0] ) && !isNaN( val[1] ) )
+		{
+			var position = new google.maps.LatLng( val[0], val[1] );
+			path.push( position );
+		}
 	});
+	
 //	for( var i = 0; i < path.length; i++ )
 //	{
 //		alert( path[i].lat() );
@@ -14,8 +18,12 @@ function draw_polyline( data )
 	{
 		path: path,
 	    	strokeColor: '#FF0000',
-	        strokeOpacity: 1.0,
-	        strokeWeight: 2
+	        strokeWeight: 5
+	});
+	
+	google.maps.event.addListener( polyline, 'click', function( event )
+	{
+		polyline.setMap( null );
 	});
 
 	polyline.setMap( map );

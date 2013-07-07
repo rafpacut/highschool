@@ -23,9 +23,24 @@ function add_marker( location, marker_id )
 		center: location,
 		radius: 250000,
 		map: map,
+		strokeOpacity: 1,
 		clickable: true,
-		strokeWeight: 2
+		strokeWeight: 2,
+		visible: false
 	});
+
+
+	google.maps.event.addListener( marker, 'mouseover', function( event )
+	{
+		circle.setVisible(true);
+	});
+
+	google.maps.event.addListener( marker, 'mouseout', function( event )
+	{
+		circle.setVisible(false);
+	});
+
+
 
 	//marker specific event listener allowing deletion:
 	google.maps.event.addListener( marker, 'click', function()
@@ -47,7 +62,7 @@ function add_marker( location, marker_id )
 			graph_constructing = false;
 
 			$.getJSON("/googlemap/shortest_paths/graph_init.php",{ 'source_id': source[0], 'source_lat': source[1], 
-			       'source_lng': source[2], 'dest_id': marker_id, 'dest_lng': location.lat(), 'dest_lng': location.lng() }, 
+			       'source_lng': source[2], 'dest_id': marker_id, 'dest_lat': location.lat(), 'dest_lng': location.lng() }, 
 		       		function( data ) 
 				{
 					draw_polyline( data);
@@ -74,7 +89,7 @@ function initialize()
 {
   var mapOptions =
   {
-    zoom: 8,
+    zoom: 5,
     center: new google.maps.LatLng(-34.397, 150.644),
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
@@ -105,6 +120,8 @@ var distanceWidget = new DistanceWidget( map );
 
 
 }
+
+
 
 google.maps.event.addDomListener(window, 'load', initialize);
 

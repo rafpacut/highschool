@@ -17,7 +17,6 @@ class edge
 	var $weight = null;
 }
 
-$graph = array();
 
 
 //$graph[0] = new Vertex;
@@ -70,8 +69,9 @@ function haversineDistance( $latitudeFrom, $longitudeFrom, $latitudeTo, $longitu
 if( isset( $_GET['source_id'] ) )
 {
 
+	$graph = array();
 
-	$circle_radius = 300;
+	$circle_radius = 250;
 
 	mysql_connect( 'localhost', 'root', 'rootpassword' );
 	mysql_select_db( 'googlemap' );
@@ -106,16 +106,6 @@ if( isset( $_GET['source_id'] ) )
 		}
 	}
 
-//	foreach( $graph as $vert )
-//	{
-//		echo "marker nr: " . $vert->number . " has ngb's: ";
-//		foreach( $vert->ngb_edges as $edge )
-//		{
-//			echo $edge->ngb->number . ',';
-//		}
-//	}
-
-
 
 	foreach( $graph as $vert )
 	{
@@ -128,24 +118,24 @@ if( isset( $_GET['source_id'] ) )
 
 	dijkstra( $graph, $source, $target );
 
+
+
+	
 	$path = array();
 	$trace = $target;
-	//echo $trace->number . " ";
 
 	$path[0] = array();
 	$path[0][0] = $trace->lat;
 	$path[0][1] = $trace->lng;
 
-	
 	while( $trace->parent != null )
 	{
 		$trace = $trace->parent;
 		$arr = array();
 		array_push( $path, $arr );
-		$el_number = count( $path );
+		$el_number = count( $path ) - 1;
 		$path[ $el_number ][0] = $trace->lat;
 		$path[ $el_number ][1] = $trace->lng;
-		//echo $trace->number . " ";
 	}
 
 	$obj = json_encode( $path );
